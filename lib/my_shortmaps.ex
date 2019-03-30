@@ -32,6 +32,9 @@ defmodule MyShortmaps do
   defp strip_pin("^" <> name), do: name
   defp strip_pin(name), do: name
 
+  defp handle_var("^" <> name) do
+    {:^, [], [Macro.var(String.to_atom(name), nil)]}
+  end
   defp handle_var(name) do
     String.to_atom(name) |> Macro.var(nil)
   end
