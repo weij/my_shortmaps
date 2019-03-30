@@ -8,7 +8,7 @@ defmodule MyShortmapsTest do
     name =  "weijun"
     title = "engineer"
 
-    %{name: name1, title: title1} = ~m(name title)
+    %{name: name1, title: title1} = ~m(name title)a
     assert name1 == name
     assert title1 == title
   end

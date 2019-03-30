@@ -2,10 +2,11 @@ defmodule MyShortmaps do
   @moduledoc """
   Documentation for MyShortmaps.
   """
+  @default_modifier ?s
 
   defmacro sigil_m(term, modifiers)
-  defmacro sigil_m({:<<>>, line, [string]}, modifiers \\ []) do
-    sigil_m_function(line, String.split(string), modifiers, __CALLER__)
+  defmacro sigil_m({:<<>>, line, [string]}, modifiers) do
+    sigil_m_function(line, String.split(string), modifier(modifiers), __CALLER__)
   end
 
   def sigil_m_function(line, words, modifier, _caller) do
@@ -35,7 +36,7 @@ defmodule MyShortmaps do
     String.to_atom(name) |> Macro.var(nil)
   end
 
-  # defp modifier do
-
-  # end
+  defp modifier([]), do: @default_modifier
+  defp modifier([mod]) when mod in 'as', do: mod
+  defp modifier(_), do: raise(ArgumentError, "only these modifiers are supported: s, a")
 end
