@@ -20,7 +20,7 @@ defmodule MyShortmaps do
   end
 
   #
-  # 步骤3:
+  # 步骤3: 关键在make_pairs/2， 然后返回 {:%{}, line, pairs}, map的qute expression
   #
   def sigil_m_function(line, words, modifier, _caller) do
     pairs = make_pairs(words, modifier)
@@ -30,12 +30,23 @@ defmodule MyShortmaps do
   end
 
   def make_pairs(words, modifier) do
+
+    #
+    # 步骤3.1: 准备collection keys
+    #
     keys = Enum.map(words, &strip_pin/1)
     IO.inspect(keys, label: "after stripped pin")
+
+    #
+    # 步骤3.2: 获取目标模块的quote expression
+    #
     variables = Enum.map(words, &handle_var/1)
     IO.inspect(variables, label: "get value input")
     # ensure_valid_variable_names(keys)
 
+    #
+    # 步骤3.3： 默认modifer为string, 不需要to_atom, 其他modifiers都to_atom
+    #
     case modifier do
       ?a -> keys |> Enum.map(&String.to_atom/1) |> Enum.zip(variables)
       ?s -> keys |> Enum.zip(variables)
